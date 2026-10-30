@@ -17,6 +17,7 @@
     "@t3-oss/env-nextjs": "^0.13.11",
     "dotenv": "^18.0.9",
     "drizzle-orm": "1.0.0-rc.5",
+    "jose": "^6.2.14",
     "next": "16.4.2",
     "react": "19.3.0",
     "react-dom": "19.3.0",
@@ -34,11 +35,5 @@
     "tsx": "^4.23.15",
     "typescript": "^5"
   },
-  "packageManager": "pnpm@12.15.0",
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "esbuild",
-      "drizzle-kit"
-    ]
-  }
+  "packageManager": "pnpm@12.15.0"
 }
