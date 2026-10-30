@@ -20,8 +20,13 @@ export async function loginAction(_prevState: unknown, formData: FormData) {
   const password = passwordValue;
 
   // Verify credentials inside Postgres using pgcrypto's crypt()
+  // src/app/login/actions.ts (inside loginAction)
   const [matchedUser] = await db
-    .select({ id: users.id, email: users.email })
+    .select({
+      id: users.id,
+      email: users.email,
+      updatedAt: users.updatedAt,
+    })
     .from(users)
     .where(
       sql`${users.email} = ${email} AND ${users.passwordHash} = crypt(${password}, ${users.passwordHash})`
@@ -35,6 +40,7 @@ export async function loginAction(_prevState: unknown, formData: FormData) {
   const token = await signToken({
     userId: matchedUser.id,
     email: matchedUser.email,
+    updatedAtMs: matchedUser.updatedAt.getTime(),
   });
 
   const cookieStore = await cookies();
