@@ -1,0 +1,73 @@
+{
+  "type": "diff",
+  "version": "9",
+  "dialect": "postgres",
+  "id": "a3345ef5-4787-4e1a-a619-dbdf872c7c25",
+  "prevIds": [
+    "8e2cc89c-04ab-4d94-871b-6822c92f74fd"
+  ],
+  "footprints": [
+    {
+      "statementType": "add_column",
+      "statementTarget": [
+        "column",
+        "public",
+        "users",
+        "updated_at"
+      ],
+      "writes": [
+        "s|col|public.users.updated_at",
+        "n|col|public.users.updated_at",
+        "e|col|public.users.updated_at"
+      ],
+      "reads": [
+        "n|tbl|public.users",
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "alter_column",
+      "statementTarget": [
+        "column",
+        "public",
+        "users",
+        "created_at"
+      ],
+      "writes": [
+        "s|colprop|public.users.created_at.type",
+        "s|colprop|public.users.created_at.default"
+      ],
+      "reads": [
+        "n|tbl|public.users",
+        "n|sch|public",
+        "n|col|public.users.created_at"
+      ],
+      "sqlHash": "b6078d89aa1555e1"
+    }
+  ],
+  "deltas": [
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "users",
+        "name": "updated_at",
+        "type": "timestamp with time zone",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": "now()",
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "alter",
+      "key": "columns\u0000[\"public\",\"users\",\"created_at\"]",
+      "set": {
+        "type": "timestamp with time zone"
+      }
+    }
+  ]
+}
