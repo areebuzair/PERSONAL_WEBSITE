@@ -9,12 +9,15 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
 export async function loginAction(_prevState: unknown, formData: FormData) {
-  const email = (formData.get('email') as string | null)?.trim().toLowerCase() ?? '';
-  const password = formData.get('password') as string;
+  const emailValue = formData.get('email');
+  const passwordValue = formData.get('password');
 
-  if (!email || !password) {
+  if (typeof emailValue !== 'string' || typeof passwordValue !== 'string') {
     return { error: 'Email and password are required.' };
   }
+
+  const email = emailValue.trim().toLowerCase();
+  const password = passwordValue;
 
   // Verify credentials inside Postgres using pgcrypto's crypt()
   const [matchedUser] = await db
