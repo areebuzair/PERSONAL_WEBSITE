@@ -2,6 +2,9 @@
 import { serverEnv } from '@/data/serverEnv';
 import { SignJWT, jwtVerify } from 'jose';
 import { cookies } from 'next/headers';
+import { db } from '@/db/db';
+import { users } from '@/db/schema';
+import { eq } from 'drizzle-orm/pg-core/expressions';
 
 const secretKey = new TextEncoder().encode(serverEnv.JWT_SECRET);
 export const COOKIE_NAME = 'auth_session';
@@ -9,6 +12,7 @@ export const COOKIE_NAME = 'auth_session';
 export interface SessionPayload {
   userId: number;
   email: string;
+  updatedAtMs: number; // Unix epoch in milliseconds from users.updatedAt
 }
 
 export async function signToken(payload: SessionPayload): Promise<string> {
@@ -19,6 +23,7 @@ export async function signToken(payload: SessionPayload): Promise<string> {
     .sign(secretKey);
 }
 
+// Fast cryptographic check (used in Middleware)
 export async function verifyToken(token: string): Promise<SessionPayload | null> {
   try {
     const { payload } = await jwtVerify(token, secretKey);
@@ -28,9 +33,25 @@ export async function verifyToken(token: string): Promise<SessionPayload | null>
   }
 }
 
+// Strict database-verified check (used in Server Components, Server Actions & API Routes)
 export async function getSession(): Promise<SessionPayload | null> {
   const cookieStore = await cookies();
   const token = cookieStore.get(COOKIE_NAME)?.value;
   if (!token) return null;
-  return verifyToken(token);
+
+  const payload = await verifyToken(token);
+  if (!payload) return null;
+
+  // Query Neon to ensure the user's updatedAt hasn't changed since this JWT was issued
+  const [user] = await db
+    .select({ updatedAt: users.updatedAt })
+    .from(users)
+    .where(eq(users.id, payload.userId))
+    .limit(1);
+
+  if (!user || user.updatedAt.getTime() !== payload.updatedAtMs) {
+    return null; // Password was changed after this token was minted -> reject session
+  }
+
+  return payload;
 }
