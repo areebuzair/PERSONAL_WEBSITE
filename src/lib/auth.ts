@@ -4,7 +4,7 @@ import { SignJWT, jwtVerify } from 'jose';
 import { cookies } from 'next/headers';
 import { db } from '@/db/db';
 import { users } from '@/db/schema';
-import { eq } from 'drizzle-orm/pg-core/expressions';
+import { eq } from 'drizzle-orm';
 
 const secretKey = new TextEncoder().encode(serverEnv.JWT_SECRET);
 export const COOKIE_NAME = 'auth_session';
@@ -13,6 +13,18 @@ export interface SessionPayload {
   userId: number;
   email: string;
   updatedAtMs: number; // Unix epoch in milliseconds from users.updatedAt
+}
+
+// src/lib/auth.ts
+export async function setSessionCookie(token: string) {
+  const cookieStore = await cookies();
+  cookieStore.set(COOKIE_NAME, token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
+    path: '/',
+    maxAge: 60 * 60 * 24 * 7, // keep equal to the JWT expiry in signToken
+  });
 }
 
 export async function signToken(payload: SessionPayload): Promise<string> {

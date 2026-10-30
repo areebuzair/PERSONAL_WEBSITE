@@ -4,7 +4,7 @@
 import { db } from '@/db/db';
 import { users } from '@/db/schema';
 import { sql } from 'drizzle-orm';
-import { signToken, COOKIE_NAME } from '@/lib/auth';
+import { signToken, COOKIE_NAME, setSessionCookie } from '@/lib/auth';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
@@ -43,14 +43,7 @@ export async function loginAction(_prevState: unknown, formData: FormData) {
     updatedAtMs: matchedUser.updatedAt.getTime(),
   });
 
-  const cookieStore = await cookies();
-  cookieStore.set(COOKIE_NAME, token, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax',
-    path: '/',
-    maxAge: 60 * 60 * 24 * 7, // 7 days
-  });
+  await setSessionCookie(token);
 
   redirect('/dashboard');
 }

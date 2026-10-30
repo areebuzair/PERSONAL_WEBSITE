@@ -3,7 +3,7 @@
 import { db } from '@/db/db';
 import { users } from '@/db/schema';
 import { sql } from 'drizzle-orm';
-import { COOKIE_NAME, getSession, signToken } from '@/lib/auth';
+import { COOKIE_NAME, getSession, setSessionCookie, signToken } from '@/lib/auth';
 import { cookies } from 'next/headers';
 
 export interface PasswordActionState {
@@ -69,14 +69,7 @@ const freshToken = await signToken({
   updatedAtMs: updatedUser.updatedAt.getTime(),
 });
 
-const cookieStore = await cookies();
-cookieStore.set(COOKIE_NAME, freshToken, {
-  httpOnly: true,
-  secure: process.env.NODE_ENV === 'production',
-  sameSite: 'lax',
-  path: '/',
-  maxAge: 60 * 60 * 24 * 7,
-});
+await setSessionCookie(freshToken);
 
 return { success: 'Password updated and all other sessions invalidated.' };
 }
