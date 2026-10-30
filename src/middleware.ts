@@ -1,6 +1,6 @@
 // src/middleware.ts
 import { NextRequest, NextResponse } from 'next/server';
-import { verifyToken, COOKIE_NAME } from '@/lib/auth';
+import { verifyToken, COOKIE_NAME } from './lib/auth';
 
 const PROTECTED_PAGES = ['/dashboard', '/settings'];
 const PROTECTED_APIS = ['/api/private'];
