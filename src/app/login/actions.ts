@@ -9,7 +9,7 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
 export async function loginAction(_prevState: unknown, formData: FormData) {
-  const email = formData.get('email') as string;
+  const email = (formData.get('email') as string | null)?.trim().toLowerCase() ?? '';
   const password = formData.get('password') as string;
 
   if (!email || !password) {
