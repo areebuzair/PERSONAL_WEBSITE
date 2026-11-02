@@ -1,6 +1,6 @@
 // src/middleware.ts
 import { NextRequest, NextResponse } from 'next/server';
-import { verifyToken, COOKIE_NAME, INACTIVITY_LIMIT_SECONDS, signToken, setSessionCookie } from '@/lib/auth';
+import { verifyToken, COOKIE_NAME, INACTIVITY_LIMIT_SECONDS, signToken, setSessionCookie, CookieSettings } from '@/lib/auth';
 
 const PROTECTED_PAGES = ['/dashboard', '/settings'];
 const PROTECTED_APIS = ['/api/private'];
@@ -45,7 +45,7 @@ export async function proxy(req: NextRequest) {
       userId: session.userId,
       email: session.email,
     });
-    await setSessionCookie(refreshedToken);
+    response.cookies.set(COOKIE_NAME, refreshedToken, CookieSettings);
   }
 
   return response;

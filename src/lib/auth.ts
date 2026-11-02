@@ -1,6 +1,7 @@
 // src/lib/auth.ts
 import { serverEnv } from '@/data/serverEnv';
 import { SignJWT, jwtVerify } from 'jose';
+import { ResponseCookie } from 'next/dist/compiled/@edge-runtime/cookies';
 import { cookies } from 'next/headers';
 
 const secretKey = new TextEncoder().encode(serverEnv.JWT_SECRET);
@@ -24,16 +25,17 @@ export async function signToken(payload: Omit<SessionPayload, 'version'>): Promi
     .sign(secretKey);
 }
 
+export const CookieSettings = {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === 'production',
+  sameSite: 'lax',
+  path: '/',
+  maxAge: INACTIVITY_LIMIT_SECONDS,
+} satisfies Partial<ResponseCookie>;
 // src/lib/auth.ts
 export async function setSessionCookie(token: string) {
   const cookieStore = await cookies();
-  cookieStore.set(COOKIE_NAME, token, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax',
-    path: '/',
-    maxAge: INACTIVITY_LIMIT_SECONDS, // keep equal to the JWT expiry in signToken
-  });
+  cookieStore.set(COOKIE_NAME, token, CookieSettings);
 }
 
 export async function verifyToken(token: string): Promise<SessionPayload | null> {
