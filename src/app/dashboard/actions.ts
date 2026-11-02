@@ -3,8 +3,7 @@
 import { db } from '@/db/db';
 import { users } from '@/db/schema';
 import { sql } from 'drizzle-orm';
-import { COOKIE_NAME, getSession, setSessionCookie, signToken } from '@/lib/auth';
-import { cookies } from 'next/headers';
+import { getSession } from '@/lib/auth';
 
 export interface PasswordActionState {
   error?: string;
@@ -44,32 +43,22 @@ export async function changePasswordAction(
 
   // 3. Atomic verify + update inside Neon via pgcrypto
   const [updatedUser] = await db
-  .update(users)
-  .set({
-    passwordHash: sql`crypt(${newPassword}, gen_salt('bf', 10))`,
-    // Drizzle's .$onUpdate(() => sql`now()`) automatically updates updated_at here
-  })
-  .where(
-    sql`${users.id} = ${session.userId} AND ${users.passwordHash} = crypt(${currentPassword}, ${users.passwordHash})`
-  )
-  .returning({
-    id: users.id,
-    email: users.email,
-    updatedAt: users.updatedAt,
-  });
+    .update(users)
+    .set({
+      passwordHash: sql`crypt(${newPassword}, gen_salt('bf', 10))`,
+      // Drizzle's .$onUpdate(() => sql`now()`) automatically updates updated_at here
+    })
+    .where(
+      sql`${users.id} = ${session.userId} AND ${users.passwordHash} = crypt(${currentPassword}, ${users.passwordHash})`
+    )
+    .returning({
+      id: users.id,
+      email: users.email,
+    });
 
-if (!updatedUser) {
-  return { error: 'Current password is incorrect.' };
-}
+  if (!updatedUser) {
+    return { error: 'Current password is incorrect.' };
+  }
 
-// Re-issue cookie for the current device with the new updatedAtMs
-const freshToken = await signToken({
-  userId: updatedUser.id,
-  email: updatedUser.email,
-  updatedAtMs: updatedUser.updatedAt.getTime(),
-});
-
-await setSessionCookie(freshToken);
-
-return { success: 'Password updated and all other sessions invalidated.' };
+  return { success: 'Password updated.' };
 }

@@ -40,7 +40,6 @@ export async function loginAction(_prevState: unknown, formData: FormData) {
   const token = await signToken({
     userId: matchedUser.id,
     email: matchedUser.email,
-    updatedAtMs: matchedUser.updatedAt.getTime(),
   });
 
   await setSessionCookie(token);
