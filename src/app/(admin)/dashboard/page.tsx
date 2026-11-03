@@ -1,5 +1,5 @@
-import { ChangePasswordForm } from "@/components/ChangePasswordForm";
-import { LogoutButtonClient } from "@/components/LogoutButtonClient";
+import { ChangePasswordForm } from "@/components/Admin/ChangePasswordForm";
+import { LogoutButtonClient } from "@/components/Admin/LogoutButtonClient";
 
 export default function page() {
     return (<>
