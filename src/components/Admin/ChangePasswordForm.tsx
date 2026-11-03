@@ -2,7 +2,7 @@
 'use client';
 
 import { useActionState } from 'react';
-import { changePasswordAction } from '@/app/dashboard/actions';
+import { changePasswordAction } from '@/app/(admin)/dashboard/actions';
 
 export function ChangePasswordForm() {
   const [state, formAction, isPending] = useActionState(changePasswordAction, null);
