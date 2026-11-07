@@ -3,9 +3,8 @@ import { Marked } from 'marked';
 import { gfmHeadingId } from 'marked-gfm-heading-id';
 import { markedHighlight } from 'marked-highlight';
 import hljs from 'highlight.js';
-import DOMPurify from 'isomorphic-dompurify';
+import sanitizeHtml from 'sanitize-html';
 
-// Import a highlight.js theme in this component or in your root layout/globals.css
 import 'highlight.js/styles/github-dark.css';
 
 export function markdownToHtml(markdown: string): string {
@@ -26,9 +25,13 @@ export function markdownToHtml(markdown: string): string {
     gfm: true,
   }) as string;
 
-  // Sanitize HTML while explicitly preserving heading `id`s and highlight.js `class` attributes
-  return DOMPurify.sanitize(rawHtml, {
-    ADD_ATTR: ['id', 'class'],
+  return sanitizeHtml(rawHtml, {
+    allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img', 'h1', 'h2', 'h3', 'details', 'summary']),
+    allowedAttributes: {
+      ...sanitizeHtml.defaults.allowedAttributes,
+      '*': ['id', 'class'],
+      img: ['src', 'alt', 'title', 'width', 'height'],
+    },
   });
 }
 
