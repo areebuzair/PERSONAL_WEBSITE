@@ -6,8 +6,6 @@ export const serverEnv = createEnv({
         DATABASE_URL: z.url(), 
         JWT_SECRET: z.string().min(32, "JWT Secret should be at least 32 characters long"),
         SESSION_VERSION: z.string(),
-        CLOUDINARY_CLOUD_NAME: z.string(),
-        CLOUDINARY_API_KEY: z.string(),
         CLOUDINARY_API_SECRET: z.string()
     },
     experimental__runtimeEnv: process.env,
