@@ -26,7 +26,7 @@ export function markdownToHtml(markdown: string): string {
   }) as string;
 
   return sanitizeHtml(rawHtml, {
-    allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img', 'h1', 'h2', 'h3', 'details', 'summary']),
+    allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img', 'h1', 'h2', 'h3', 'details', 'summary', 'del']),
     allowedAttributes: {
       ...sanitizeHtml.defaults.allowedAttributes,
       '*': ['id', 'class'],
@@ -45,7 +45,7 @@ export function MarkdownArticle({ content, className = '' }: MarkdownArticleProp
 
   return (
     <article
-      className={`prose prose-invert max-w-none ${className}`.trim()}
+      className={`prose max-w-none ${className}`.trim()}
       dangerouslySetInnerHTML={{ __html: safeHtml }}
     />
   );

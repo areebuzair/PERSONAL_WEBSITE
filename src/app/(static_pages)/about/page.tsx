@@ -19,8 +19,6 @@ export default async function BlogPage() {
   const markdown = await res.text();
 
   return (
-    <main className="max-w-3xl mx-auto p-6">
-      <MarkdownArticle content={markdown} />
-    </main>
+    <MarkdownArticle content={markdown} />
   );
 }
