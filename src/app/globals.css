@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -26,4 +27,18 @@ body {
 
 summary {
   cursor: pointer;
+}
+
+.skeleton-bg {
+  background-color: #212121;
+  background-image: linear-gradient(to right, rgb(151, 151, 151) 45%, rgb(177, 177, 177), rgb(151, 151, 151) 55%);
+  background-size: 300% 100%;
+  background-position: 100% 0%;
+  animation: skeleton-bg-pan 3s linear infinite; 
+}
+
+@keyframes skeleton-bg-pan {
+  100% {
+    background-position: 0% 0%; 
+  }
 }

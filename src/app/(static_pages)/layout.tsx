@@ -5,7 +5,7 @@ export default function Layout({ children }: LayoutProps<"/">) {
     return (
         <>
             <Navbar />
-            <main className="container px-4 py-2 mx-auto">
+            <main className="container px-4 py-2 mx-auto min-h-screen">
                 {children}
                 </main>
             <Footer />
