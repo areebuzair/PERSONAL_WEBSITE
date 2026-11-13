@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -26,4 +27,15 @@ body {
 
 summary {
   cursor: pointer;
+}
+
+.skeleton-bg {
+  background-color: #888888;
+  animation: skeleton-bg-flash 5s ease-in-out infinite;
+}
+
+@keyframes skeleton-bg-flash {
+  50% {
+    background-color: #AAAAAA;
+  }
 }
