@@ -4,9 +4,9 @@ import Link from "next/link";
 import { generateURLfromID, getImagesByFolder, getImagesByFolderAndTag } from "@/lib/cloudinary";
 
 export function GalleryLoader() {
-    return <div className="columns-xs">
+    return <div className="columns-xs w-full">
         {[...Array(6).keys()].map(num => (
-            <Image src={LoadingImagePreview} alt="Loading..." key={num} className="w-full mb-2 skeleton-bg" />
+            <Image src={LoadingImagePreview} alt="Loading..." loading="eager" key={num} className="w-full mb-2 skeleton-bg" />
         ))}
     </div>
 }
@@ -24,7 +24,7 @@ export async function Gallery({ tag, cursor }: { tag: string | undefined, cursor
     if (nextCursor) nextQueryParams.cursor = nextCursor;
 
     return <>
-        <div className="columns-xs">
+        <div className="columns-xs w-full">
             {images.map((img) => (
                 <div key={img.id}>
                     <img src={generateURLfromID(img.id, { width: 300 })} className="w-full mb-2" />
