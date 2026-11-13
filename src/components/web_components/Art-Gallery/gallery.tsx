@@ -27,7 +27,7 @@ export async function Gallery({ tag, cursor }: { tag: string | undefined, cursor
         <div className="columns-xs w-full">
             {images.map((img) => (
                 <div key={img.id}>
-                    <img src={generateURLfromID(img.id, { width: 300 })} className="w-full mb-2" />
+                    <img src={generateURLfromID(img.id, { width: 300 })} className="w-full mb-2 skeleton-bg" />
                 </div>
             ))}
         </div>
