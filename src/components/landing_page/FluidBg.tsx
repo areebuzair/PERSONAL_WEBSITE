@@ -154,10 +154,17 @@ export default function ShatteredSpectraBackground() {
     };
 
     const init = () => {
+      const dpr = window.devicePixelRatio || 1;
       W = window.innerWidth;
       H = window.innerHeight;
-      cnv.width = W;
-      cnv.height = H;
+
+      // Scale the internal drawing buffer to match physical device pixels
+      cnv.width = Math.floor(W * dpr);
+      cnv.height = Math.floor(H * dpr);
+
+      // Normalize the coordinate system to CSS pixels
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
       points = [];
     };
 
