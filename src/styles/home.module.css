@@ -1,0 +1,44 @@
+.hero {
+  --bg-url: url("https://res.cloudinary.com/pgt4hajg/image/upload/f_auto,q_auto/v1783170737/samples/cup-on-a-table");
+  background-image: var(--bg-url);
+  background-attachment: fixed;
+  background-position: center;
+  background-size: 110vmax 110vmax;
+  margin: 0;
+  position: relative;
+}
+
+.hero:after{
+  content: "";
+  width: 100%;
+  height: 1.5rem;
+  background-image: linear-gradient(to top, rgba(0, 0, 0, 0.684), transparent);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+.hero > div {
+  backdrop-filter: blur(0.5vmax);
+  background-image: linear-gradient(
+      45deg,
+      #99999910 0%,
+      #e6e6e610 25%,
+      #ffffff10 45%,
+      #8c8c8c10 55%,
+      #ffffff10 75%,
+      #aaaaaa10 100%
+    ),
+    linear-gradient(rgba(0, 0, 0, 0.4)),
+    var(--bg-url);
+  background-attachment: fixed;
+  background-position: center;
+  background-size: 100vmax 100vmax;
+  border-style: solid;
+  border-color: rgba(199, 199, 199, 0.779) rgba(17, 17, 17, 0.619) rgba(0, 0, 0, 0.619) rgba(96, 96, 96, 0.619);
+  border-radius: 2px;
+}
+
+.hero big{
+  -webkit-text-stroke: black 1px;
+}
