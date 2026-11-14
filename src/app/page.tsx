@@ -4,14 +4,11 @@ import styles from "@/styles/home.module.css"
 import FluidBg from "@/components/landing_page/FluidBg";
 
 export default function Home() {
-
-  console.log(styles)
- 
   return (
     <>
       <FluidBg />
-      <main className="max-w-full">
-        <section className="hero p-5">
+      <main className="max-w-full m-0 p-0">
+        <section className={styles.hero}>
           
           <div className="m-10 bg-red-700 box-border px-2 sm:px-10 md:px-20 py-36 flex justify-center items-center text-center flex-col">
             <h1 className="text-lg text-white">J. M Areeb Uzair Alam</h1>

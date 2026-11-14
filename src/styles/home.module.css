@@ -4,6 +4,8 @@
   background-attachment: fixed;
   background-position: center;
   background-size: 110vmax 110vmax;
+  margin: 0;
+  padding: 2rem;
 }
 
 .hero > div {
@@ -25,4 +27,8 @@
   border: 3px solid;
   border-color: rgba(143, 143, 143, 0.619) rgba(17, 17, 17, 0.619) rgba(0, 0, 0, 0.619) rgba(96, 96, 96, 0.619);
   border-radius: 2px;
+}
+
+.hero big{
+  -webkit-text-stroke: black 1px;
 }
