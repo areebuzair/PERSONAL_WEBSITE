@@ -1,5 +1,6 @@
 "use client";
 
+import { log } from "console";
 import React, { useEffect, useRef, useState } from "react";
 
 interface PointData {
@@ -11,8 +12,10 @@ interface PointData {
 }
 
 const POINT_LIFETIME = 100;
+// At 0.05 alpha per frame, ~120 frames (~2 seconds at 60fps) reduces remaining trail contrast below 0.2%
+const FADE_OUT_FRAMES = 120;
 
-export default function FluidBg() {
+export default function ShatteredSpectraBackground() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [isFinePointer, setIsFinePointer] = useState(false);
 
@@ -29,7 +32,7 @@ export default function FluidBg() {
     return () => mediaQuery.removeEventListener("change", handleMediaChange);
   }, []);
 
-  // 2. Initialize canvas animation only when pointer is fine
+  // 2. Manage on-demand canvas animation when pointer is fine
   useEffect(() => {
     if (!isFinePointer) return;
 
@@ -41,7 +44,8 @@ export default function FluidBg() {
     let W = window.innerWidth;
     let H = window.innerHeight;
     let points: PointData[] = [];
-    let animationFrameId: number;
+    let animationFrameId: number | null = null;
+    let fadeFramesRemaining = 0;
 
     const createPoint = (x: number, y: number): PointData => {
       let dx = 0;
@@ -82,14 +86,6 @@ export default function FluidBg() {
       ctx.moveTo(p1.x, p1.y);
       ctx.lineTo(p2.x, p2.y);
       ctx.stroke();
-    };
-
-    const init = () => {
-      W = window.innerWidth;
-      H = window.innerHeight;
-      cnv.width = W;
-      cnv.height = H;
-      points = [];
     };
 
     const draw = () => {
@@ -135,34 +131,71 @@ export default function FluidBg() {
       draw();
       update();
 
-      animationFrameId = window.requestAnimationFrame(animate);
+      if (points.length > 0) {
+        // Keep resetting the fade-out tail while points are still active
+        fadeFramesRemaining = FADE_OUT_FRAMES;
+        animationFrameId = window.requestAnimationFrame(animate);
+      } else if (fadeFramesRemaining > 0) {
+        // Points have expired; continue filling translucent rect until trails vanish
+        fadeFramesRemaining -= 1;
+        animationFrameId = window.requestAnimationFrame(animate);
+      } else {
+        // Trails have completely faded: paint a clean final background and suspend
+        ctx.fillStyle = "rgb(255, 248, 233)";
+        ctx.fillRect(0, 0, W, H);
+        animationFrameId = null;
+      }
     };
 
-    // Attach listeners to `window` so background captures movement behind UI elements
+    const startLoop = () => {
+      fadeFramesRemaining = FADE_OUT_FRAMES;
+      if (animationFrameId === null) {
+        animationFrameId = window.requestAnimationFrame(animate);
+      }
+    };
+
+    const init = () => {
+      W = window.innerWidth;
+      H = window.innerHeight;
+      cnv.width = W;
+      cnv.height = H;
+      points = [];
+    };
+
+    const handleResize = () => {
+      init();
+      startLoop();
+    };
+
     const handleMouseDown = (e: MouseEvent) => {
       points.push(createPoint(e.clientX, e.clientY));
+      startLoop();
     };
 
     const handleMouseMove = (e: MouseEvent) => {
       if (points.length === 0) {
         points.push(createPoint(e.clientX, e.clientY));
+        startLoop();
       } else if (
         distanceFrom(points[points.length - 1], e.clientX, e.clientY) > 50
       ) {
         points.push(createPoint(e.clientX, e.clientY));
+        startLoop();
       }
     };
 
+    // Initialize dimensions on mount without starting the animation loop
     init();
-    animate();
 
-    window.addEventListener("resize", init);
+    window.addEventListener("resize", handleResize);
     window.addEventListener("mousedown", handleMouseDown);
     window.addEventListener("mousemove", handleMouseMove);
 
     return () => {
-      window.cancelAnimationFrame(animationFrameId);
-      window.removeEventListener("resize", init);
+      if (animationFrameId !== null) {
+        window.cancelAnimationFrame(animationFrameId);
+      }
+      window.removeEventListener("resize", handleResize);
       window.removeEventListener("mousedown", handleMouseDown);
       window.removeEventListener("mousemove", handleMouseMove);
     };
@@ -182,7 +215,7 @@ export default function FluidBg() {
         width: "100vw",
         height: "100vh",
         zIndex: -1,
-        pointerEvents: "none", // Allows clicks/scrolls to pass through to your foreground content
+        pointerEvents: "none",
         backgroundColor: "rgb(255, 248, 233)",
       }}
     />
