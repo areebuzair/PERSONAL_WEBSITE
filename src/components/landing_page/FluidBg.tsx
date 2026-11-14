@@ -1,7 +1,7 @@
 "use client";
 
 import { log } from "console";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useSyncExternalStore } from "react";
 
 interface PointData {
   x: number;
@@ -17,20 +17,19 @@ const FADE_OUT_FRAMES = 120;
 
 export default function ShatteredSpectraBackground() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const [isFinePointer, setIsFinePointer] = useState(false);
 
   // 1. Check and listen for the (pointer: fine) media query
-  useEffect(() => {
-    const mediaQuery = window.matchMedia("(pointer: fine)");
-    setIsFinePointer(mediaQuery.matches);
+  const mediaQueryString = "(pointer: fine)"
+  const subscribe = (callback: () => void) => {
+    const mediaQuery = window.matchMedia(mediaQueryString);
+    mediaQuery.addEventListener("change", callback);
+    return () => mediaQuery.removeEventListener("change", callback);
+  }
 
-    const handleMediaChange = (e: MediaQueryListEvent) => {
-      setIsFinePointer(e.matches);
-    };
-
-    mediaQuery.addEventListener("change", handleMediaChange);
-    return () => mediaQuery.removeEventListener("change", handleMediaChange);
-  }, []);
+  const isFinePointer = useSyncExternalStore(subscribe,
+    () => window.matchMedia(mediaQueryString).matches,
+    () => false
+  );
 
   // 2. Manage on-demand canvas animation when pointer is fine
   useEffect(() => {
