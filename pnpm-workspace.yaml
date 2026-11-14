@@ -3,5 +3,7 @@ allowBuilds:
   sharp: false
   unrs-resolver: false
 permissions:
+  '@parcel/watcher':
+    build: true
   drizzle-kit:
     skills: true
