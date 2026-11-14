@@ -183,7 +183,7 @@ export default function FluidBg() {
         height: "100vh",
         zIndex: -1,
         pointerEvents: "none", // Allows clicks/scrolls to pass through to your foreground content
-        backgroundColor: "black",
+        backgroundColor: "rgb(255, 248, 233)",
       }}
     />
   );

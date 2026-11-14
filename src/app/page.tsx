@@ -8,15 +8,15 @@ export default function Home() {
     <>
       <FluidBg />
       <main className="max-w-full m-0 p-0">
-        <section className={styles.hero}>
+        <section className={`${styles.hero} p-0 sm:p-2`}>
           
-          <div className="m-10 bg-red-700 box-border px-2 sm:px-10 md:px-20 py-36 flex justify-center items-center text-center flex-col">
-            <h1 className="text-lg text-white">J. M Areeb Uzair Alam</h1>
-            <big className="text-yellow-300 text-xl sm:text-5xl md:text-8xl font-bold">Websites should be fast!</big>
+          <div className="m-0 sm:m-4 md:m-10 box-border px-2 sm:px-10 md:px-20 py-2 sm:py-36 min-h-screen sm:h-auto flex justify-end sm:justify-center sm:items-center sm:text-center flex-col sm:border-[3px]">
+            <h1 className="text-xs sm:text-lg text-white">J. M Areeb Uzair Alam</h1>
+            <big className="text-yellow-300 text-3xl sm:text-5xl md:text-8xl font-bold">Websites should be fast!</big>
           </div>
         </section>
 
-        <section className="w-full h-screen container mx-auto">
+        <section className="w-full h-screen container mx-auto px-2 py-1">
           Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eveniet, quis doloremque necessitatibus at officia voluptas quae debitis exercitationem deleniti beatae?
         </section>
 
