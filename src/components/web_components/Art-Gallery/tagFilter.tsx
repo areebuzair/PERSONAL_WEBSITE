@@ -20,7 +20,7 @@ export default function TagFilter({ currentTag }: { currentTag?: string }) {
     };
 
     return (
-        <fieldset className="flex flex-col gap-2">
+        <fieldset className="flex sm:flex-col gap-2">
             <legend className="text-sm font-medium mb-2">Filter by Tag:</legend>
 
             {/* "All" option to clear the tag filter */}

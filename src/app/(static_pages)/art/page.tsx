@@ -11,8 +11,8 @@ export default async function GalleryPage({
     const { tag, cursor } = await searchParams;
 
     return (
-        <div className="flex gap-16">
-            <div className="max-w-full">
+        <div className="flex gap-4 sm:gap-16 flex-col sm:flex-row">
+            <div className="max-w-full overflow-x-auto sm:overflow-x-visible">
                 <TagFilter currentTag={tag} />
             </div>
             <Suspense key={`${tag ?? "all"}-${cursor ?? "first"}`} fallback={<GalleryLoader />}>
