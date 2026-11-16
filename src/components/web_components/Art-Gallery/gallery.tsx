@@ -18,9 +18,11 @@ export function GalleryLoader() {
 export async function Gallery({ tag, cursor }: { tag: string | undefined, cursor: string | undefined }) {
     const FOLDER = "blog_page_artworks";
 
+    const limit = 10;
+
     const { images, nextCursor, totalCount } = tag
-        ? await getImagesByFolderAndTag(FOLDER, tag, { limit: 10, nextCursor: cursor })
-        : await getImagesByFolder(FOLDER, { limit: 10, nextCursor: cursor });
+        ? await getImagesByFolderAndTag(FOLDER, tag, { limit: limit, nextCursor: cursor })
+        : await getImagesByFolder(FOLDER, { limit: limit, nextCursor: cursor });
 
     // Build the query object for the Next button so it keeps the current tag
     const nextQueryParams: Record<string, string> = {};
