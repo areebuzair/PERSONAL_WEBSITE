@@ -20,7 +20,7 @@ export function PhotoViewWrapper({ images }: { images: CloudinaryImageItem[] }) 
             {images.map((img) => (
                 <PhotoView key={img.id} src={img.url}>
                     <button type="button" className="block w-full">
-                        <img src={img.thumbnailurl} alt={img.displayName} className="w-full mb-2 skeleton-bg" />
+                        <img src={img.thumbnailurl} alt={img.displayName} width={img.width} height={img.height} className="w-full mb-2 skeleton-bg" loading="lazy"/>
                     </button>
                 </PhotoView>
             ))}
