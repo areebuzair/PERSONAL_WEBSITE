@@ -17,6 +17,7 @@ export interface CloudinaryImageItem {
   uploadedAtUTC: string; // ISO 8601 UTC timestamp (e.g. "2026-11-10T10:25:00Z")
   tags: string[];
   url: string; // Pre-generated f_auto, q_auto URL
+  thumbnailurl: string; // Pre-generated f_auto, q_auto, width = 300px URL
   width: number;
   height: number;
 }
@@ -81,6 +82,7 @@ async function executePaginatedSearch(
       uploadedAtUTC: new Date(res.created_at).toISOString(),
       tags: res.tags || [],
       url: generateURLfromID(res.public_id),
+      thumbnailurl: generateURLfromID(res.public_id, { width: 300 }),
       width: res.width,
       height: res.height,
     })

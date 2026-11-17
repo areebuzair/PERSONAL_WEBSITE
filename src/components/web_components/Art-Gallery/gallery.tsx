@@ -2,6 +2,10 @@ import Image from "next/image";
 import LoadingImagePreview from "@/assets/Image Loading Preview.svg"
 import Link from "next/link";
 import { generateURLfromID, getImagesByFolder, getImagesByFolderAndTag } from "@/lib/cloudinary";
+import { PhotoProvider, PhotoView } from 'react-photo-view';
+import 'react-photo-view/dist/react-photo-view.css';
+import { PhotoViewWrapper } from "./photo-view-wrapper";
+
 
 export function GalleryLoader() {
     return <div className="columns-xs w-full">
@@ -14,9 +18,11 @@ export function GalleryLoader() {
 export async function Gallery({ tag, cursor }: { tag: string | undefined, cursor: string | undefined }) {
     const FOLDER = "blog_page_artworks";
 
+    const limit = 10;
+
     const { images, nextCursor, totalCount } = tag
-        ? await getImagesByFolderAndTag(FOLDER, tag, { limit: 10, nextCursor: cursor })
-        : await getImagesByFolder(FOLDER, { limit: 10, nextCursor: cursor });
+        ? await getImagesByFolderAndTag(FOLDER, tag, { limit: limit, nextCursor: cursor })
+        : await getImagesByFolder(FOLDER, { limit: limit, nextCursor: cursor });
 
     // Build the query object for the Next button so it keeps the current tag
     const nextQueryParams: Record<string, string> = {};
@@ -24,13 +30,7 @@ export async function Gallery({ tag, cursor }: { tag: string | undefined, cursor
     if (nextCursor) nextQueryParams.cursor = nextCursor;
 
     return <>
-        <div className="columns-xs w-full">
-            {images.map((img) => (
-                <div key={img.id}>
-                    <img src={generateURLfromID(img.id, { width: 300 })} className="w-full mb-2 skeleton-bg" />
-                </div>
-            ))}
-        </div>
+        <PhotoViewWrapper images={images}/>
 
         {/* Render Next button only if nextCursor is not null */}
         {nextCursor && (
