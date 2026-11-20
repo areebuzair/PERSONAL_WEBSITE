@@ -10,9 +10,10 @@ export default function page() {
             <ChangePasswordForm />
         </div>
         <div className="p-4">
-            <Link href="dashboard/new-art" className="px-4 py-2 rounded-xl bg-blue-700 text-white">
-                Upload new artwork
-            </Link>            
+             
+            <Link href="dashboard/art" className="px-4 py-2 rounded-xl bg-blue-700 text-white">
+                Fix art issues
+            </Link>          
         </div>
     </>
     )

@@ -1,9 +1,11 @@
 // src/app/dashboard/layout.tsx
 
-export default async function DashboardLayout({
+export const instant = false;
+
+export default async function DashboardLayout({ 
     children,
 }: {
     children: React.ReactNode;
 }) {
-    return <>{children}</>;
+    return <main className="container mx-auto p-5">{children}</main>;
 }
