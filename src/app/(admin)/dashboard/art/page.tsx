@@ -3,13 +3,6 @@ import { CategoryCreator } from "./CategoryManager";
 import { Suspense } from "react";
 import ImageUploader from "./ImageUploader";
 
-const CategoryList = async () => {
-    const categories = await getImageCategories();
-    return <ul>
-        {categories.map(item => <li key={item.id}>- {item.name}</li>)}
-    </ul>
-}
-
 const ArtSettings = async () => {
     const categories = await getImageCategories();
     return <div className="space-y-2">
