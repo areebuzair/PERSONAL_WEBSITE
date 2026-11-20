@@ -3,9 +3,7 @@
 
 import { useRouter, usePathname } from "next/navigation";
 
-const AVAILABLE_TAGS = ["blender", "ambigram"] as const;
-
-export default function TagFilter({ currentTag }: { currentTag?: string }) {
+export default function TagFilter({ currentTag, AVAILABLE_TAGS }: { currentTag?: string, AVAILABLE_TAGS: string[] }) {
     const router = useRouter();
     const pathname = usePathname();
 

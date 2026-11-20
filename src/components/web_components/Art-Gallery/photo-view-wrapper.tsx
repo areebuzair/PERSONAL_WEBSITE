@@ -16,14 +16,16 @@ export function PhotoViewWrapper({ images }: { images: CloudinaryImageItem[] }) 
             return <RotateButton rotate={rotate} onRotate={onRotate} />;
         }}
     >
-        <div className="columns-xs w-full">
+        {(images.length == 0) && <div>Nothing to see here yet, folks!</div>}
+        {(images.length > 0) && <div className="columns-xs w-full">
             {images.map((img) => (
                 <PhotoView key={img.id} src={img.url}>
                     <button type="button" className="block w-full">
-                        <img src={img.thumbnailurl} alt={img.displayName} width={img.width} height={img.height} className="w-full mb-2 skeleton-bg" loading="lazy"/>
+                        <img src={img.thumbnailurl} alt={img.displayName} width={img.width} height={img.height} className="w-full mb-2 skeleton-bg" loading="lazy" />
                     </button>
                 </PhotoView>
             ))}
         </div>
+        }
     </PhotoProvider>
 }
