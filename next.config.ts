@@ -5,6 +5,7 @@ const nextConfig: NextConfig = {
   cacheComponents: true,
   partialPrefetching: true,
   experimental: {
+    agentUpgrade: "security",
     serverActions: {
       bodySizeLimit: "10mb", // Adjust as needed for high-res art
     },
