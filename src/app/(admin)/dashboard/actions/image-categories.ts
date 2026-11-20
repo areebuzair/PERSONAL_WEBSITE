@@ -16,6 +16,9 @@ export async function createCategory(prevState: any, formData: FormData) {
     if (!trimmedName) {
         return { success: false, error: 'Category name is required.' };
     }
+    if (trimmedName.includes(",")) {
+        return { success: false, error: 'Category name cannot contain ",".' };
+    }
 
     try {
         await db.insert(imageCategories).values({ name: trimmedName });

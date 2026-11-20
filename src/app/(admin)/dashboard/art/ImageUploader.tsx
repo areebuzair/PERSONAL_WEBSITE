@@ -1,7 +1,7 @@
 // app/admin/upload/page.tsx
 "use client";
 
-import { useActionState, useState, useRef } from "react";
+import { useActionState, useState, useRef, useEffect } from "react";
 import { uploadArtwork, UploadState } from "../actions/image-upload";
 
 // Customize your available artwork tags here
@@ -17,19 +17,30 @@ import { uploadArtwork, UploadState } from "../actions/image-upload";
 
 const initialState: UploadState = {};
 
-export default function ImageUploader({AVAILABLE_TAGS}: {AVAILABLE_TAGS: string[]}) {
+export default function ImageUploader({ AVAILABLE_TAGS }: { AVAILABLE_TAGS: string[] }) {
   const [state, formAction, isPending] = useActionState(uploadArtwork, initialState);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const formRef = useRef<HTMLFormElement>(null);
 
+  const clearImage = () => {
+    if (previewUrl) {
+      URL.revokeObjectURL(previewUrl);
+    }
+  }
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      clearImage()
       setPreviewUrl(URL.createObjectURL(file));
     } else {
       setPreviewUrl(null);
     }
   };
+
+  useEffect(() => {
+    return clearImage;
+  })
 
   return (
     <div className="max-w-xl mx-auto p-6 bg-white dark:bg-zinc-900 rounded-xl shadow-md border border-zinc-200 dark:border-zinc-800 my-10">
