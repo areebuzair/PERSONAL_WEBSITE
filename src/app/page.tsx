@@ -1,24 +1,69 @@
-import Image from "next/image";
+import { FaLinkedin } from "react-icons/fa6";
+import { FaGithub } from "react-icons/fa6";
+import { SiProtonmail } from "react-icons/si";
+import { FaYoutube } from "react-icons/fa6";
+import { FaFile } from "react-icons/fa6";
+
 import Link from "next/link";
 import styles from "@/styles/home.module.css"
 import FluidBg from "@/components/landing_page/FluidBg";
 
 export default function Home() {
+
+  const navData = [
+    {
+      url: "https://areebuzair.github.io/",
+      Icon: FaYoutube,
+      title: "YouTube",
+      color: "red"
+    },
+    {
+      url: "https://github.com/areebuzair",
+      Icon: FaGithub,
+      title: "GitHub",
+      color: "red"
+    },
+    {
+      url: "mailto:jmareebuzair@proton.me",
+      Icon: SiProtonmail,
+      title: "Mail",
+      color: "red"
+    },
+    {
+      url: "https://www.linkedin.com/in/j-m-areeb-uzair-alam-017075389",
+      Icon: FaLinkedin,
+      title: "LinkedIn",
+      color: "red"
+    },
+    {
+      url: "https://areebuzair.github.io/cv-maker/cv.pdf",
+      Icon: FaFile,
+      title: "CV", 
+      color: "red"
+    }
+  ]
+
   return (
     <>
       <FluidBg />
-      <main className="max-w-full m-0 p-0">
-        <section className={`${styles.hero} p-0 sm:p-2`}>
-
-          <div className="m-0 sm:m-4 md:m-10 box-border px-2 sm:px-10 md:px-20 py-20 sm:py-36 min-h-screen sm:h-auto flex justify-start sm:justify-center sm:items-center sm:text-center flex-col sm:border-[3px]">
-            <h1 className="text-[clamp(1rem,8vw,30rem)] sm:text-lg text-white">J. M Areeb Uzair Alam</h1>
-            <big className="text-yellow-300 text-[clamp(2rem,10vw,40rem)] sm:text-5xl md:text-8xl font-bold">Websites should be fast!</big>
+      <main className="max-w-full m-0 space-y-5">
+        <section className={`w-full h-screen flex flex-col items-center justify-center text-center ${styles["hero-image"]}`}>
+          <h1 className="font-mono font-bold text-[clamp(0.5rem,10vw,18rem)] leading-none text-center text-white">JMAREEBUZAIR</h1>
+          <p className="text-gray-200">
+            Full-stack developer based in Bangladesh.
+          </p>
+          <div className="flex flex-col justify-between gap-2 text-white absolute top-2 left-2">
+            {navData.map(item => (
+              <Link key={item.title} href={item.url} title={item.title} className="hover:text-red-500 flex items-center gap-2">
+                <item.Icon size={25} /> {item.title}
+              </Link>
+            ))}
           </div>
         </section>
 
-        <section className="w-full h-screen container mx-auto px-2 py-1">
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eveniet, quis doloremque necessitatibus at officia voluptas quae debitis exercitationem deleniti beatae?
-        </section>
+        {/* <section className="w-full container mx-auto text-xl sm:text-3xl leading-tight grid grid-cols-2 px-2 py-36 place-content-center">
+          
+        </section> */}
 
         <section className="w-full h-screen flex flex-col items-center justify-center text-center bg-[linear-gradient(to_top,forestgreen,seagreen_45%,#88CCCC,deepskyblue_55%,blue)]">
           <div className="bg-yellow-300 max-w-[90%] w-96 aspect-video border-8 border-black rounded-2xl flex flex-col items-center justify-center text-center">
