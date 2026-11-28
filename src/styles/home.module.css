@@ -1,44 +1,32 @@
-.hero {
-  --bg-url: url("https://res.cloudinary.com/pgt4hajg/image/upload/f_auto,q_auto/v1783170737/samples/cup-on-a-table");
-  background-image: var(--bg-url);
-  background-attachment: fixed;
-  background-position: center;
-  background-size: 110vmax 110vmax;
+.hero-image {
+  --bg-url: url("/Hex Tiles.svg");
+  background:
+    linear-gradient(to right, rgba(0, 0, 0, 0.7), transparent, rgba(0, 0, 0, 0.7) ),
+    linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent ),
+    var(--bg-url) center/105px fixed;
   margin: 0;
   position: relative;
 }
 
-.hero:after{
+.hero-image:after {
   content: "";
-  width: 100%;
-  height: 1.5rem;
-  background-image: linear-gradient(to top, rgba(0, 0, 0, 0.684), transparent);
   position: absolute;
-  bottom: 0;
+  width: 100%;
+  height: 100%;
+  top: 0;
   left: 0;
+  z-index: -1;
+  background-image: linear-gradient(to right, blue, rgb(0, 140, 255), hsl(0, 100%, 39%), rgb(0, 140, 255), blue);
+  background-size: 200%;
+  animation: background-pan 5s linear infinite;
 }
 
-.hero > div {
-  backdrop-filter: blur(0.5vmax);
-  background-image: linear-gradient(
-      45deg,
-      #99999910 0%,
-      #e6e6e610 25%,
-      #ffffff10 45%,
-      #8c8c8c10 55%,
-      #ffffff10 75%,
-      #aaaaaa10 100%
-    ),
-    linear-gradient(rgba(0, 0, 0, 0.4)),
-    var(--bg-url);
-  background-attachment: fixed;
-  background-position: center;
-  background-size: 100vmax 100vmax;
-  border-style: solid;
-  border-color: rgba(199, 199, 199, 0.779) rgba(17, 17, 17, 0.619) rgba(0, 0, 0, 0.619) rgba(96, 96, 96, 0.619);
-  border-radius: 2px;
-}
+@keyframes background-pan {
+  from {
+    background-position: 0% center;
+  }
 
-.hero big{
-  -webkit-text-stroke: black 1px;
+  to {
+    background-position: -200% center;
+  }
 }
