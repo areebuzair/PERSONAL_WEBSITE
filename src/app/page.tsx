@@ -4,15 +4,17 @@ import { SiProtonmail } from "react-icons/si";
 import { FaYoutube } from "react-icons/fa6";
 import { FaFile } from "react-icons/fa6";
 
+import { IoGameController } from "react-icons/io5";
+
 import Link from "next/link";
 import styles from "@/styles/home.module.css"
 import FluidBg from "@/components/landing_page/FluidBg";
 
 export default function Home() {
 
-  const navData = [
+  const socials = [
     {
-      url: "https://areebuzair.github.io/",
+      url: "https://www.youtube.com/@jmareebuzair",
       Icon: FaYoutube,
       title: "YouTube",
       color: "red"
@@ -35,29 +37,25 @@ export default function Home() {
       title: "LinkedIn",
       color: "red"
     },
-    {
-      url: "https://areebuzair.github.io/cv-maker/cv.pdf",
-      Icon: FaFile,
-      title: "CV", 
-      color: "red"
-    }
   ]
 
   return (
     <>
       <FluidBg />
       <main className="max-w-full m-0 space-y-5">
-        <section className={`w-full h-screen flex flex-col items-center justify-center text-center ${styles["hero-image"]}`}>
-          <h1 className="font-mono font-bold text-[clamp(0.5rem,10vw,18rem)] leading-none text-center text-white">JMAREEBUZAIR</h1>
+        <section className={`w-full min-h-screen px-4 py-10 flex flex-col items-start xs:items-center justify-center xs:text-center ${styles["hero-image"]}`}>
+          <h1 className="font-display font-bold text-[clamp(4rem,10vw,18rem)] leading-none xs:text-center text-white">J. M AREEB UZAIR</h1>
           <p className="text-gray-200">
-            Full-stack developer based in Bangladesh.
+            I am a full-stack developer based in Bangladesh.
           </p>
-          <div className="flex flex-col justify-between gap-2 text-white absolute top-2 left-2">
-            {navData.map(item => (
-              <Link key={item.title} href={item.url} title={item.title} className="hover:text-red-500 flex items-center gap-2">
-                <item.Icon size={25} /> {item.title}
-              </Link>
-            ))}
+          <div className="xs:absolute top-4 left-4 space-y-4">
+            <div className="grid min-[250px]:grid-cols-2 xs:flex flex-col justify-between gap-4 text-white xs:bg-blue-100/10 py-2 xs:px-2 xs:py-4 rounded-4xl xs:border flex-wrap max-w-full">
+              {socials.map(item => (
+                <Link key={item.title} href={item.url} title={item.title} className="flex items-center gap-2">
+                  <item.Icon size={24} /> <span className="xs:hidden">{item.title}</span>
+                </Link>
+              ))}
+            </div>
           </div>
         </section>
 
